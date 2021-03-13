@@ -1,2 +1,1 @@
 # Helm charts
-# charts
