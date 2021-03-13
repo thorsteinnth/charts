@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  enterprise-gateway:
+  - apiVersion: v1
+    created: "2021-03-13T19:19:43.32477685Z"
+    description: A helm chart to deploy Jupyter Enterprise Gateway
+    digest: f47a6c3c4a853fc3762ac2efa8b3140bec54871a7ed5430e748c4c9050bff768
+    home: https://jupyter.org/enterprise_gateway
+    icon: https://avatars1.githubusercontent.com/u/7388996?s=200&v=4
+    kubeVersion: '>=1.11.0-0'
+    maintainers:
+    - email: nate.franzen@netapp.com
+      name: ntfrnzn
+    name: enterprise-gateway
+    sources:
+    - https://github.com/jupyter/enterprise_gateway
+    urls:
+    - https://github.com/thorsteinnth/charts/releases/download/enterprise-gateway-2.5.0/enterprise-gateway-2.5.0.tgz
+    version: 2.5.0
+generated: "2021-03-13T19:19:43.32478895Z"
