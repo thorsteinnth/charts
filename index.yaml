@@ -39,4 +39,25 @@ entries:
     urls:
     - https://github.com/thorsteinnth/charts/releases/download/wave-operator-0.2.3-test/wave-operator-0.2.3-test.tgz
     version: 0.2.3-test
-generated: "2021-03-13T19:26:34.129744761Z"
+  - apiVersion: v2
+    appVersion: 0.2.2
+    created: "2021-03-13T19:39:15.57465536Z"
+    description: A Helm chart for Kubernetes
+    digest: 5e7d4928918b16494b9f0d2336f9a3d25a0dea5087c7b48ece2ac6f3c7796bcf
+    home: https://github.com/spotinst/charts
+    icon: https://docs.spot.io/_media/images/spot_mark.png
+    keywords:
+    - spot
+    - toolkit
+    - ocean
+    maintainers:
+    - email: nate.franzen@netapp.com
+      name: ntfrnzn
+    name: wave-operator
+    sources:
+    - https://github.com/spotinst/wave-operator
+    type: application
+    urls:
+    - https://github.com/thorsteinnth/charts/releases/download/wave-operator-0.2.2/wave-operator-0.2.2.tgz
+    version: 0.2.2
+generated: "2021-03-13T19:39:15.57466656Z"
