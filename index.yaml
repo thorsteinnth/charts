@@ -17,6 +17,22 @@ entries:
     urls:
     - https://github.com/thorsteinnth/charts/releases/download/enterprise-gateway-2.5.0/enterprise-gateway-2.5.0.tgz
     version: 2.5.0
+  spark-operator-dev:
+  - apiVersion: v2
+    appVersion: v1beta2-1.2.0-3.0.0
+    created: "2021-05-04T08:09:35.183580147Z"
+    description: A Helm chart for Spark on Kubernetes operator
+    digest: ea4c07fd1b87b5daed34f0862542d459204752af29925741e2e94c03007671d4
+    home: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
+    keywords:
+    - spark
+    maintainers:
+    - email: thorsteinn.sigurdsson@netapp.com
+      name: thorsteinnth
+    name: spark-operator-dev
+    urls:
+    - https://github.com/thorsteinnth/charts/releases/download/spark-operator-dev-1.0.6/spark-operator-dev-1.0.6.tgz
+    version: 1.0.6
   wave-operator:
   - apiVersion: v2
     appVersion: 0.2.3
@@ -81,4 +97,4 @@ entries:
     urls:
     - https://github.com/thorsteinnth/charts/releases/download/wave-operator-0.2.2/wave-operator-0.2.2.tgz
     version: 0.2.2
-generated: "2021-03-13T19:41:06.018331725Z"
+generated: "2021-05-04T08:09:35.183600647Z"
