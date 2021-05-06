@@ -20,6 +20,21 @@ entries:
   spark-operator:
   - apiVersion: v2
     appVersion: v1beta2-1.2.0-3.0.0
+    created: "2021-05-06T10:57:35.791844124Z"
+    description: A Helm chart for Spark on Kubernetes operator
+    digest: 5fde222ceb463cfa97c256faa47c1439831396d2f8519483ef3274bc6c8ec37e
+    home: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
+    keywords:
+    - spark
+    maintainers:
+    - email: thorsteinn.sigurdsson@netapp.com
+      name: thorsteinnth
+    name: spark-operator
+    urls:
+    - https://github.com/thorsteinnth/charts/releases/download/spark-operator-1.0.6-webhookdev/spark-operator-1.0.6-webhookdev.tgz
+    version: 1.0.6-webhookdev
+  - apiVersion: v2
+    appVersion: v1beta2-1.2.0-3.0.0
     created: "2021-05-04T08:34:35.807906Z"
     description: A Helm chart for Spark on Kubernetes operator
     digest: f253a22e9fced89cc5c2723b10da82556bad78ea8955667f3e78e4a186c52a19
@@ -113,4 +128,4 @@ entries:
     urls:
     - https://github.com/thorsteinnth/charts/releases/download/wave-operator-0.2.2/wave-operator-0.2.2.tgz
     version: 0.2.2
-generated: "2021-05-04T08:34:35.807928901Z"
+generated: "2021-05-06T10:57:35.791877025Z"
