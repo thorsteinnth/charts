@@ -1,0 +1,64 @@
+# Default values for wave-operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+image:
+  repository: public.ecr.aws/l8m2k1n1/netapp/bigdata-operator
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: [ ]
+
+# Controls the creation of big data environment using embedded components
+bigDataEnvironment:
+  create: false
+  name: ""
+  active: false
+  componentVersions: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: "" # Defaults to release name
+
+podAnnotations: { }
+
+podSecurityContext: { }
+# fsGroup: 2000
+
+securityContext: { }
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 50m
+    memory: 50Mi
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+            - key: spotinst.io/node-lifecycle
+              operator: In
+              values:
+                - od

@@ -1,0 +1,17 @@
+apiVersion: v2
+name: bigdata-operator
+description: Spot Ocean BigData Operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://github.com/spotinst/charts
+icon: https://docs.spot.io/_media/images/spot_mark.png
+sources:
+  - https://github.com/spotinst/bigdata-operator
+keywords:
+  - spot
+  - toolkit
+  - ocean
+maintainers:
+  - name: thorsteinnth
+    email: thorsteinn.sigurdsson@netapp.com

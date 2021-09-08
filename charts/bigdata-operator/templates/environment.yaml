@@ -1,0 +1,25 @@
+{{- if .Values.bigDataEnvironment.create -}}
+apiVersion: bigdata.spot.io/v1
+kind: BigDataEnvironment
+metadata:
+  name: {{ .Values.bigDataEnvironment.name | default (include "bigdata-operator.fullname" .) }}
+  labels:
+  {{- include "bigdata-operator.labels" . | nindent 4 }}
+spec:
+  active: {{ .Values.bigDataEnvironment.active }}
+  purge: false
+  state: present
+  components:
+    spark-operator:
+      type: helm
+      chartName: "spark-operator"
+      url: ""
+      state: present
+      version: {{ .Values.bigDataEnvironment.componentVersions | default .Chart.AppVersion }}
+    spark-operator-static:
+      type: helm
+      chartName: "spark-operator-static"
+      url: ""
+      state: present
+      version: {{ .Values.bigDataEnvironment.componentVersions | default .Chart.AppVersion }}
+  {{- end }}
