@@ -5,6 +5,8 @@ metadata:
   name: {{ .Values.bigDataEnvironment.name | default (include "bigdata-operator.fullname" .) }}
   labels:
   {{- include "bigdata-operator.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/resource-policy": keep # helm delete should not delete the environment, we want to do that explicitly
 spec:
   active: {{ .Values.bigDataEnvironment.active }}
   purge: false
