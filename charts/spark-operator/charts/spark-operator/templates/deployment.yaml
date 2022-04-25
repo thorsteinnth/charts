@@ -32,7 +32,21 @@ spec:
     {{- end }}
       labels:
         {{- include "spark-operator.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | trim | nindent 8 }}
+        {{- end }}
     spec:
+      {{- /*
+        Added by OfAS
+      */}}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- /*
+        https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+        For Pods running with hostNetwork, you should explicitly set its DNS policy to "ClusterFirstWithHostNet"
+      */}}
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
       serviceAccountName: {{ include "spark-operator.serviceAccountName" . }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -46,19 +60,29 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
-        {{- if .Values.metrics.enable }}
         ports:
+        {{- if .Values.metrics.enable }}
           - name: {{ .Values.metrics.portName | quote }}
             containerPort: {{ .Values.metrics.port }}
-        {{ end }}
+        {{- end }}
+        {{- /*
+           Added by OfAS
+        */}}
+        {{- if .Values.hostNetwork }}
+          - name: webhook
+            containerPort: {{ .Values.webhook.port }}
+            hostPort: {{ .Values.webhook.port }}
+        {{- end }}
         args:
         - -v={{ .Values.logLevel }}
         - -logtostderr
         - -namespace={{ .Values.sparkJobNamespace }}
+        - -enable-ui-service={{ .Values.uiService.enable}}
         - -ingress-url-format={{ .Values.ingressUrlFormat }}
         - -controller-threads={{ .Values.controllerThreads }}
         - -resync-interval={{ .Values.resyncInterval }}
         - -enable-batch-scheduler={{ .Values.batchScheduler.enable }}
+        - -label-selector-filter={{ .Values.labelSelectorFilter }}
         {{- if .Values.metrics.enable }}
         - -enable-metrics=true
         - -metrics-labels=app_type
@@ -70,14 +94,10 @@ spec:
         - -enable-webhook=true
         - -webhook-svc-namespace={{ .Release.Namespace }}
         - -webhook-port={{ .Values.webhook.port }}
+        - -webhook-timeout={{ .Values.webhook.timeout }}
         - -webhook-svc-name={{ include "spark-operator.fullname" . }}-webhook
         - -webhook-config-name={{ include "spark-operator.fullname" . }}-webhook-config
         - -webhook-namespace-selector={{ .Values.webhook.namespaceSelector }}
-        {{ if .Values.webhook.useCertManager }}
-        - -webhook-server-cert=/etc/webhook-certs/tls.crt
-        - -webhook-server-cert-key=/etc/webhook-certs/tls.key
-        - -webhook-ca-cert=/etc/webhook-certs/ca.crt
-        {{- end }}
         {{- end }}
         - -enable-resource-quota-enforcement={{ .Values.resourceQuotaEnforcement.enable }}
         {{- if gt (int .Values.replicaCount) 1 }}
@@ -87,15 +107,27 @@ spec:
         {{- end }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
-      {{- if .Values.webhook.enable }}
+        {{- if or .Values.webhook.enable (ne (len .Values.volumeMounts) 0 ) }}
         volumeMounts:
+        {{- end }}
+          {{- if .Values.webhook.enable }}
           - name: webhook-certs
             mountPath: /etc/webhook-certs
+          {{- end }}
+        {{- with .Values.volumeMounts }}
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- if or .Values.webhook.enable (ne (len .Values.volumes) 0 ) }}
       volumes:
+      {{- end }}
+        {{- if .Values.webhook.enable }}
         - name: webhook-certs
           secret:
-            secretName: spark-webhook-certs
-      {{- end }}
+            secretName: {{ include "spark-operator.fullname" . }}-webhook-certs
+        {{- end }}
+        {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

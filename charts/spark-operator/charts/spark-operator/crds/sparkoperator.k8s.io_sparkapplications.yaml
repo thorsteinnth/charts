@@ -1,48 +1,54 @@
 
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: (unknown)
-  creationTimestamp: null
-  name: scheduledsparkapplications.sparkoperator.k8s.io
+    api-approved.kubernetes.io: https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/pull/1298
+  name: sparkapplications.sparkoperator.k8s.io
 spec:
   group: sparkoperator.k8s.io
   names:
-    kind: ScheduledSparkApplication
-    listKind: ScheduledSparkApplicationList
-    plural: scheduledsparkapplications
+    kind: SparkApplication
+    listKind: SparkApplicationList
+    plural: sparkapplications
     shortNames:
-    - scheduledsparkapp
-    singular: scheduledsparkapplication
+    - sparkapp
+    singular: sparkapplication
   scope: Namespaced
-  subresources:
-    status: {}
-  validation:
-    openAPIV3Schema:
-      properties:
-        apiVersion:
+  versions:
+    - name: v1beta2
+      served: true
+      storage: true
+      subresources:
+        status: { }
+      additionalPrinterColumns:
+        - jsonPath: .status.applicationState.state
+          name: Status
           type: string
-        kind:
+        - jsonPath: .status.executionAttempts
+          name: Attempts
           type: string
-        metadata:
-          type: object
-        spec:
+        - jsonPath: .status.lastSubmissionAttemptTime
+          name: Start
+          type: string
+        - jsonPath: .status.terminationTime
+          name: Finish
+          type: string
+        - jsonPath: .metadata.creationTimestamp
+          name: Age
+          type: date
+      schema:
+        openAPIV3Schema:
           properties:
-            concurrencyPolicy:
+            apiVersion:
               type: string
-            failedRunHistoryLimit:
-              format: int32
-              type: integer
-            schedule:
+            kind:
               type: string
-            successfulRunHistoryLimit:
-              format: int32
-              type: integer
-            suspend:
-              type: boolean
-            template:
+            metadata:
+              type: object
+            spec:
               properties:
                 arguments:
                   items:
@@ -508,6 +514,17 @@ spec:
                       - name
                       - quantity
                       type: object
+                    hostAliases:
+                      items:
+                        properties:
+                          hostnames:
+                            items:
+                              type: string
+                            type: array
+                          ip:
+                            type: string
+                        type: object
+                      type: array
                     hostNetwork:
                       type: boolean
                     image:
@@ -1295,6 +1312,8 @@ spec:
                       additionalProperties:
                         type: string
                       type: object
+                    shareProcessNamespace:
+                      type: boolean
                     sidecars:
                       items:
                         properties:
@@ -2307,6 +2326,17 @@ spec:
                       - name
                       - quantity
                       type: object
+                    hostAliases:
+                      items:
+                        properties:
+                          hostnames:
+                            items:
+                              type: string
+                            type: array
+                          ip:
+                            type: string
+                        type: object
+                      type: array
                     hostNetwork:
                       type: boolean
                     image:
@@ -2986,6 +3016,8 @@ spec:
                       type: object
                     serviceAccount:
                       type: string
+                    shareProcessNamespace:
+                      type: boolean
                     sidecars:
                       items:
                         properties:
@@ -3670,6 +3702,10 @@ spec:
                   type: string
                 sparkUIOptions:
                   properties:
+                    serviceAnnotations:
+                      additionalProperties:
+                        type: string
+                      type: object
                     ingressAnnotations:
                       additionalProperties:
                         type: string
@@ -3688,6 +3724,10 @@ spec:
                     servicePort:
                       format: int32
                       type: integer
+                    servicePortName:
+                      type: string
+                    serviceType:
+                      type: string
                   type: object
                 sparkVersion:
                   type: string
@@ -4300,47 +4340,65 @@ spec:
               - sparkVersion
               - type
               type: object
+            status:
+              properties:
+                applicationState:
+                  properties:
+                    errorMessage:
+                      type: string
+                    state:
+                      type: string
+                  required:
+                  - state
+                  type: object
+                driverInfo:
+                  properties:
+                    podName:
+                      type: string
+                    webUIAddress:
+                      type: string
+                    webUIIngressAddress:
+                      type: string
+                    webUIIngressName:
+                      type: string
+                    webUIPort:
+                      format: int32
+                      type: integer
+                    webUIServiceName:
+                      type: string
+                  type: object
+                executionAttempts:
+                  format: int32
+                  type: integer
+                executorState:
+                  additionalProperties:
+                    type: string
+                  type: object
+                lastSubmissionAttemptTime:
+                  format: date-time
+                  nullable: true
+                  type: string
+                sparkApplicationId:
+                  type: string
+                submissionAttempts:
+                  format: int32
+                  type: integer
+                submissionID:
+                  type: string
+                terminationTime:
+                  format: date-time
+                  nullable: true
+                  type: string
+              required:
+              - driverInfo
+              type: object
           required:
-          - schedule
-          - template
+          - metadata
+          - spec
           type: object
-        status:
-          properties:
-            lastRun:
-              format: date-time
-              nullable: true
-              type: string
-            lastRunName:
-              type: string
-            nextRun:
-              format: date-time
-              nullable: true
-              type: string
-            pastFailedRunNames:
-              items:
-                type: string
-              type: array
-            pastSuccessfulRunNames:
-              items:
-                type: string
-              type: array
-            reason:
-              type: string
-            scheduleState:
-              type: string
-          type: object
-      required:
-      - metadata
-      - spec
-      type: object
-  version: v1beta2
-  versions:
-  - name: v1beta2
-    served: true
-    storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: null
-  storedVersions: null
+  conditions: []
+  storedVersions: []

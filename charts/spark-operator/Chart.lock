@@ -1,0 +1,6 @@
+dependencies:
+- name: spark-operator
+  repository: ""
+  version: 1.1.20
+digest: sha256:0beb33ae2ec41aff928f57b55d750f5134b96035908725744bb5c05a61eceb2b
+generated: "2022-04-22T09:17:17.159186+02:00"
